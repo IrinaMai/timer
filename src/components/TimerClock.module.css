@@ -1,0 +1,40 @@
+.timerWrapper {
+    display: block;
+    /* outline: 1px solid teal; */
+    width: 260px;
+      margin: 15px auto;
+}
+.btnWrapper {
+    display: flex;
+    /* outline: 1px solid teal; */
+    justify-content: center;
+  
+    
+}
+.timerBtn {
+    min-width: 150px;
+    height: 35px;
+    font-weight: bold;
+    text-transform: uppercase;
+     color: #000080;
+     background-color:	lightsteelblue;
+     border: 2px solid #000080;
+     box-shadow: 3px 4px 8px 0px rgba(0, 0, 128, 0.18);
+     border-radius: 5px;
+     outline: none;
+
+}
+.timerBtn:not(:last-child){
+    margin-right: 15px;
+}
+.timerBtn:hover,
+.timerBtn:focus {
+    cursor: pointer;
+    box-shadow: 3px 4px 8px 0px rgba(0, 0, 128, 0.5);
+}
+.timer {
+    font-size: 24px;
+  letter-spacing: 0.5em;
+  font-weight: bold;
+    color: #000080;
+}

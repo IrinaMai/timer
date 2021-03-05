@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import TimerClock from "./TimerClock";
 
 const initialState = {
   hours: "HH",
@@ -14,8 +15,10 @@ class Timer extends Component {
 
   intervalId = null;
   clickCounter = 0;
+  firstClick = 0;
+  secondClick = 0;
 
-  onClickStart = () => {
+  hndlClick = () => {
     if (!this.state.isActive) {
       clearInterval(this.intervalId);
       this.setState({ ...initialState });
@@ -35,8 +38,7 @@ class Timer extends Component {
       }));
     }
     this.intervalId = setInterval(() => {
-      const currentTime = Date.now();
-      const diffTime = currentTime - this.state.startTime;
+      const diffTime = Date.now() - this.state.startTime;
       this.updateTimer(diffTime);
     }, 1000);
   };
@@ -52,11 +54,8 @@ class Timer extends Component {
       seconds: String(Math.floor((time % (1000 * 60)) / 1000)).padStart(2, "0"),
     });
   };
-  firstClick = 0;
-  secondClick = 0;
-  // diff = 0;
 
-  onClickWait = () => {
+  hdlWait = () => {
     this.clickCounter += 1;
     if (this.clickCounter === 1) {
       this.firstClick = Date.now();
@@ -65,47 +64,45 @@ class Timer extends Component {
       const diff = this.secondClick - this.firstClick;
       if (diff < 300) {
         clearInterval(this.intervalId);
-        this.setState({ isActive: true });
+        this.setState({
+          isActive: true,
+          pauseLong: Date.now(),
+        });
         this.clickCounter = 0;
-        this.setState({ pauseLong: Date.now() });
       } else {
         this.clickCounter = 0;
-        // this.firstClick = 0;
-        // this.secondClick = 0;
         return;
       }
     }
   };
 
-  onClickReset = () => {
-    clearInterval(this.intervalId);
-    this.setState({
-      ...initialState,
-      hours: "00",
-      minutes: "00",
-      seconds: "00",
-    });
-    this.timeOut();
+  hndlReset = () => {
+    if (this.state.isActive) {
+      return;
+    } else {
+      clearInterval(this.intervalId);
+      this.setState({
+        ...initialState,
+        hours: "00",
+        minutes: "00",
+        seconds: "00",
+      });
+      this.timeOut();
+    }
   };
 
   render() {
     const { hours, minutes, seconds, isActive } = this.state;
     return (
-      <>
-        <p>
-          {hours}: {minutes}: {seconds}
-        </p>
-        <button type="button" onClick={this.onClickStart}>
-          {isActive ? "Start" : "Stop"}
-        </button>
-
-        <button type="button" onClick={this.onClickWait}>
-          Wait
-        </button>
-        <button type="button" onClick={this.onClickReset}>
-          Reset
-        </button>
-      </>
+      <TimerClock
+        hours={hours}
+        minutes={minutes}
+        seconds={seconds}
+        isActive={isActive}
+        hndlClick={this.hndlClick}
+        hndlReset={this.hndlReset}
+        hdlWait={this.hdlWait}
+      />
     );
   }
 }
