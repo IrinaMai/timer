@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import TimerClock from "./TimerClock";
+import { Observable } from 'rxjs';
+
+
 
 const initialState = {
   hours: "HH",
@@ -55,26 +58,60 @@ class Timer extends Component {
     });
   };
 
-  hdlWait = () => {
-    this.clickCounter += 1;
-    if (this.clickCounter === 1) {
-      this.firstClick = Date.now();
-    } else if (this.clickCounter === 2) {
-      this.secondClick = Date.now();
-      const diff = this.secondClick - this.firstClick;
-      if (diff < 300) {
-        clearInterval(this.intervalId);
-        this.setState({
+  hdlWait = (e) => {
+    this.clickCounter +=1
+
+     const timer = new Observable(observer => {
+
+      setTimeout(() => {
+        observer.next(this.clickCounter)
+        observer.complete()
+       }, 300);
+      
+ 
+    });
+
+    
+    const subscription = timer.subscribe({
+      next: value => {
+        if (value < 2) {
+          return
+        };
+          this.setState({
           isActive: true,
           pauseLong: Date.now(),
-        });
-        this.clickCounter = 0;
-      } else {
-        this.clickCounter = 0;
-        return;
-      }
-    }
-  };
+          });
+          console.log("true", value)
+        },
+
+      complete: () => this.clickCounter = 0
+  })
+
+ 
+
+  // setTimeout(() => subscription.unsubscribe(), 1000);
+  }
+
+
+    // this.clickCounter += 1;
+    // if (this.clickCounter === 1) {
+    //   this.firstClick = Date.now();
+    // } else if (this.clickCounter === 2) {
+    //   this.secondClick = Date.now();
+    //   const diff = this.secondClick - this.firstClick;
+    //   if (diff < 300) {
+    //     clearInterval(this.intervalId);
+    //     this.setState({
+    //       isActive: true,
+    //       pauseLong: Date.now(),
+    //     });
+    //     this.clickCounter = 0;
+    //   } else {
+    //     this.clickCounter = 0;
+    //     return;
+    //   }
+    // }
+ 
 
   hndlReset = () => {
     if (this.state.isActive) {

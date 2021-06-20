@@ -15,15 +15,17 @@ const TimerClock = ({
   hdlWait,
   hndlReset,
 }) => {
-  const onClickStart = () => {
-    hndlClick();
+  const onClickStart = (e) => {
+    hndlClick(e);
   };
-  const onClickWait = () => {
-    hdlWait();
+  const onClickWait = (e) => {
+    hdlWait(e);
   };
-  const onClickReset = () => {
-    hndlReset();
+  const onClickReset = (e) => {
+    hndlReset(e);
   };
+
+
 
   return (
     <>

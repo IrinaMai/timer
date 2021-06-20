@@ -1,8 +1,14 @@
 import React from "react";
-import Timer from "./components/Timer";
+import TimeObserve from './components/TimeObserve';
+
+
+
+
+
 
 function App() {
-  return <Timer />;
+ 
+  return <TimeObserve /> 
 }
 
 export default App;
