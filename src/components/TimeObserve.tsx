@@ -1,19 +1,24 @@
 import React, { useState } from "react";
-import TimerClock from "./TimerClock";
+import TimerClock from './TimerClock.tsx';
+  
 
-import {  of, fromEvent,  interval, timer, range } from 'rxjs';
-import { map, tap, take, scan, takeUntil, reduce} from 'rxjs/operators';
-import { wait } from "@testing-library/react";
+import { fromEvent,  interval} from 'rxjs';
+import { takeUntil, reduce} from 'rxjs/operators';
 
 
-
-const initialState = {
+type TState = {
+  hours: string,
+  minutes: string,
+  seconds: string
+}
+  
+const initialState:TState = {
   hours: "HH",
   minutes: "MM",
   seconds: "SS"
 }
 
-const zeroState = {
+const zeroState: TState = {
   hours: String(0).padStart(2, "0"),
   minutes: String(0).padStart(2, "0"),
   seconds: String(0).padStart(2, "0"),
@@ -27,7 +32,7 @@ const TimeObserve = () => {
 
 
   //================== START TIMER ================================
-  const startTimer = (stateTime = 1) => {
+  const startTimer = (stateTime: number = 1) => {
     setIntervalId( interval( 1000)
     .subscribe(
       (time) => {
@@ -41,16 +46,18 @@ const TimeObserve = () => {
               seconds: String(Math.floor((time+stateTime)% (60)) ).padStart(2, "0"),
             })
           }
-      ))
+    ))
+   
 
   }
 
 //=========================== START / STOP =========================================
-  const hndlClick = (e) => {
+  const hndlClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
+    
     if (isActive) {
       setActive(false);
-      if (isNaN(state.seconds)) {
+      if (isNaN(Number(state.seconds))) {
         setState({ ...zeroState })
         startTimer()
       } else {
@@ -67,7 +74,7 @@ const TimeObserve = () => {
   }
   
   //=========================== RESET =========================================
-  const hndlReset = (e) => {
+  const hndlReset = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (!isActive) {
       intervalId.unsubscribe()
@@ -85,7 +92,7 @@ const TimeObserve = () => {
     setActive(true)
     }
 
-  const hdlWait = (e) => {
+  const hdlWait = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (!isActive) {
       fromEvent(document, 'click')

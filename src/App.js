@@ -1,5 +1,5 @@
 import React from "react";
-import TimeObserve from './components/TimeObserve';
+import TimeObserve from './components/TimeObserve.tsx';
 
 
 

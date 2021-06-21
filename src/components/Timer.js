@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import TimerClock from "./TimerClock";
+import {TimerClock} from "./TimerClock";
 import { Observable } from 'rxjs';
 
 
